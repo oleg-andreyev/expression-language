@@ -3,9 +3,10 @@
   "version": "1.2.0",
   "description": "Javascript implementation of symfony/expression-language",
   "main": "lib/index.js",
-  "types": "lib/",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "prepublish": "rm -rf lib && tsc",
+    "prepublish": "rm -rf lib && tsc -m module --outDir es && tsc -m commonjs --outDir lib",
     "test": "jest"
   },
   "jest": {
