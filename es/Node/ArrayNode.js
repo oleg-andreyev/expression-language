@@ -13,131 +13,119 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
+import Node from "./Node";
+import ConstantNode from "./ConstantNode";
+var ArrayNode = /** @class */ (function (_super) {
+    __extends(ArrayNode, _super);
+    function ArrayNode() {
+        var _this = _super.call(this, []) || this;
+        _this.name = "ArrayNode";
+        _this.type = "Array";
+        _this.index = -1;
+        _this.keyIndex = -1;
+        return _this;
     }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Node", "./ConstantNode"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var Node_1 = require("./Node");
-    var ConstantNode_1 = require("./ConstantNode");
-    var ArrayNode = /** @class */ (function (_super) {
-        __extends(ArrayNode, _super);
-        function ArrayNode() {
-            var _this = _super.call(this, []) || this;
-            _this.name = "ArrayNode";
-            _this.type = "Array";
-            _this.index = -1;
-            _this.keyIndex = -1;
-            return _this;
+    ArrayNode.prototype.addElement = function (value, key) {
+        if (key === void 0) { key = null; }
+        if (null === key) {
+            key = new ConstantNode(++this.index);
         }
-        ArrayNode.prototype.addElement = function (value, key) {
-            if (key === void 0) { key = null; }
-            if (null === key) {
-                key = new ConstantNode_1.default(++this.index);
-            }
-            else {
-                if (this.type === 'Array') {
-                    this.type = 'Object';
-                }
-            }
-            this.nodes[(++this.keyIndex).toString()] = key;
-            this.nodes[(++this.keyIndex).toString()] = value;
-        };
-        ArrayNode.prototype.compile = function (compiler) {
-            if (this.type === 'Object') {
-                compiler.raw('{');
-            }
-            else {
-                compiler.raw('[');
-            }
-            this.compileArguments(compiler, this.type !== "Array");
-            if (this.type === 'Object') {
-                compiler.raw('}');
-            }
-            else {
-                compiler.raw(']');
-            }
-        };
-        ArrayNode.prototype.evaluate = function (functions, values) {
-            var result;
+        else {
             if (this.type === 'Array') {
-                result = [];
-                for (var _i = 0, _a = this.getKeyValuePairs(); _i < _a.length; _i++) {
-                    var pair = _a[_i];
-                    result.push(pair.value.evaluate(functions, values));
-                }
+                this.type = 'Object';
             }
-            else {
-                result = {};
-                for (var _b = 0, _c = this.getKeyValuePairs(); _b < _c.length; _b++) {
-                    var pair = _c[_b];
-                    result[pair.key.evaluate(functions, values)] = pair.value.evaluate(functions, values);
-                }
-            }
-            return result;
-        };
-        ArrayNode.prototype.toArray = function () {
-            var value = {};
+        }
+        this.nodes[(++this.keyIndex).toString()] = key;
+        this.nodes[(++this.keyIndex).toString()] = value;
+    };
+    ArrayNode.prototype.compile = function (compiler) {
+        if (this.type === 'Object') {
+            compiler.raw('{');
+        }
+        else {
+            compiler.raw('[');
+        }
+        this.compileArguments(compiler, this.type !== "Array");
+        if (this.type === 'Object') {
+            compiler.raw('}');
+        }
+        else {
+            compiler.raw(']');
+        }
+    };
+    ArrayNode.prototype.evaluate = function (functions, values) {
+        var result;
+        if (this.type === 'Array') {
+            result = [];
             for (var _i = 0, _a = this.getKeyValuePairs(); _i < _a.length; _i++) {
                 var pair = _a[_i];
-                value[pair.key.attributes.value] = pair.value;
+                result.push(pair.value.evaluate(functions, values));
             }
-            var array = [];
-            if (this.isHash(value)) {
-                for (var _b = 0, _c = Object.keys(value); _b < _c.length; _b++) {
-                    var k = _c[_b];
-                    array.push(', ');
-                    array.push(new ConstantNode_1.default(k));
-                    array.push(': ');
-                    array.push(value[k]);
-                }
-                array[0] = '{';
-                array.push('}');
+        }
+        else {
+            result = {};
+            for (var _b = 0, _c = this.getKeyValuePairs(); _b < _c.length; _b++) {
+                var pair = _c[_b];
+                result[pair.key.evaluate(functions, values)] = pair.value.evaluate(functions, values);
             }
-            else {
-                for (var _d = 0, _e = Object.values(value); _d < _e.length; _d++) {
-                    var v = _e[_d];
-                    array.push(', ');
-                    array.push(v);
-                }
-                array[0] = '[';
-                array.push(']');
+        }
+        return result;
+    };
+    ArrayNode.prototype.toArray = function () {
+        var value = {};
+        for (var _i = 0, _a = this.getKeyValuePairs(); _i < _a.length; _i++) {
+            var pair = _a[_i];
+            value[pair.key.attributes.value] = pair.value;
+        }
+        var array = [];
+        if (this.isHash(value)) {
+            for (var _b = 0, _c = Object.keys(value); _b < _c.length; _b++) {
+                var k = _c[_b];
+                array.push(', ');
+                array.push(new ConstantNode(k));
+                array.push(': ');
+                array.push(value[k]);
             }
-            return array;
-        };
-        ArrayNode.prototype.getKeyValuePairs = function () {
-            var pairs = [];
-            var nodes = Object.values(this.nodes);
-            var i, j, pair, chunk = 2;
-            for (i = 0, j = nodes.length; i < j; i += chunk) {
-                pair = nodes.slice(i, i + chunk);
-                pairs.push({ key: pair[0], value: pair[1] });
+            array[0] = '{';
+            array.push('}');
+        }
+        else {
+            for (var _d = 0, _e = Object.values(value); _d < _e.length; _d++) {
+                var v = _e[_d];
+                array.push(', ');
+                array.push(v);
             }
-            return pairs;
-        };
-        ArrayNode.prototype.compileArguments = function (compiler, withKeys) {
-            if (withKeys === void 0) { withKeys = true; }
-            var first = true;
-            for (var _i = 0, _a = this.getKeyValuePairs(); _i < _a.length; _i++) {
-                var pair = _a[_i];
-                if (!first) {
-                    compiler.raw(', ');
-                }
-                first = false;
-                if (withKeys) {
-                    compiler.compile(pair.key)
-                        .raw(': ');
-                }
-                compiler.compile(pair.value);
+            array[0] = '[';
+            array.push(']');
+        }
+        return array;
+    };
+    ArrayNode.prototype.getKeyValuePairs = function () {
+        var pairs = [];
+        var nodes = Object.values(this.nodes);
+        var i, j, pair, chunk = 2;
+        for (i = 0, j = nodes.length; i < j; i += chunk) {
+            pair = nodes.slice(i, i + chunk);
+            pairs.push({ key: pair[0], value: pair[1] });
+        }
+        return pairs;
+    };
+    ArrayNode.prototype.compileArguments = function (compiler, withKeys) {
+        if (withKeys === void 0) { withKeys = true; }
+        var first = true;
+        for (var _i = 0, _a = this.getKeyValuePairs(); _i < _a.length; _i++) {
+            var pair = _a[_i];
+            if (!first) {
+                compiler.raw(', ');
             }
-        };
-        return ArrayNode;
-    }(Node_1.default));
-    exports.default = ArrayNode;
-});
+            first = false;
+            if (withKeys) {
+                compiler.compile(pair.key)
+                    .raw(': ');
+            }
+            compiler.compile(pair.value);
+        }
+    };
+    return ArrayNode;
+}(Node));
+export default ArrayNode;

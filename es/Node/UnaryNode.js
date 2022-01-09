@@ -13,52 +13,40 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
+import Node from "./Node";
+var UnaryNode = /** @class */ (function (_super) {
+    __extends(UnaryNode, _super);
+    function UnaryNode(operator, node) {
+        var _this = _super.call(this, { node: node }, { operator: operator }) || this;
+        _this.name = 'UnaryNode';
+        return _this;
     }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Node"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var Node_1 = require("./Node");
-    var UnaryNode = /** @class */ (function (_super) {
-        __extends(UnaryNode, _super);
-        function UnaryNode(operator, node) {
-            var _this = _super.call(this, { node: node }, { operator: operator }) || this;
-            _this.name = 'UnaryNode';
-            return _this;
+    UnaryNode.prototype.compile = function (compiler) {
+        compiler.raw('(')
+            .raw(UnaryNode.operators[this.attributes.operator])
+            .compile(this.nodes.node)
+            .raw(')');
+    };
+    UnaryNode.prototype.evaluate = function (functions, values) {
+        var value = this.nodes.node.evaluate(functions, values);
+        switch (this.attributes.operator) {
+            case 'not':
+            case '!':
+                return !value;
+            case '-':
+                return -value;
         }
-        UnaryNode.prototype.compile = function (compiler) {
-            compiler.raw('(')
-                .raw(UnaryNode.operators[this.attributes.operator])
-                .compile(this.nodes.node)
-                .raw(')');
-        };
-        UnaryNode.prototype.evaluate = function (functions, values) {
-            var value = this.nodes.node.evaluate(functions, values);
-            switch (this.attributes.operator) {
-                case 'not':
-                case '!':
-                    return !value;
-                case '-':
-                    return -value;
-            }
-            return value;
-        };
-        UnaryNode.prototype.toArray = function () {
-            return ['(', this.attributes.operator + " ", this.nodes.node, ')'];
-        };
-        UnaryNode.operators = {
-            '!': '!',
-            'not': '!',
-            '+': '+',
-            '-': '-'
-        };
-        return UnaryNode;
-    }(Node_1.default));
-    exports.default = UnaryNode;
-});
+        return value;
+    };
+    UnaryNode.prototype.toArray = function () {
+        return ['(', this.attributes.operator + " ", this.nodes.node, ')'];
+    };
+    UnaryNode.operators = {
+        '!': '!',
+        'not': '!',
+        '+': '+',
+        '-': '-'
+    };
+    return UnaryNode;
+}(Node));
+export default UnaryNode;

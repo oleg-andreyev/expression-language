@@ -1,171 +1,159 @@
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
+import { tokenize } from "../Lexer";
+import Parser from "../Parser";
+import ArgumentsNode from "../Node/ArgumentsNode";
+import ConstantNode from "../Node/ConstantNode";
+import NameNode from "../Node/NameNode";
+import UnaryNode from "../Node/UnaryNode";
+import BinaryNode from "../Node/BinaryNode";
+import GetAttrNode from "../Node/GetAttrNode";
+import ConditionalNode from "../Node/ConditionalNode";
+import ArrayNode from "../Node/ArrayNode";
+function getParseData() {
+    var args = new ArgumentsNode();
+    args.addElement(new ConstantNode('arg1'));
+    args.addElement(new ConstantNode(2));
+    args.addElement(new ConstantNode(true));
+    var arrayNode = new ArrayNode();
+    arrayNode.addElement(new NameNode('bar'));
+    return [
+        [new NameNode('a'), 'a', ['a']],
+        [new ConstantNode('a'), '"a"'],
+        [new ConstantNode(3), '3'],
+        [new ConstantNode(false), 'false'],
+        [new ConstantNode(true), 'true'],
+        [new ConstantNode(null), 'null'],
+        [new UnaryNode('-', new ConstantNode(3)), '-3'],
+        [new BinaryNode('-', new ConstantNode(3), new ConstantNode(3)), '3 - 3'],
+        [new BinaryNode('*', new BinaryNode('-', new ConstantNode(3), new ConstantNode(3)), new ConstantNode(2)),
+            '(3 - 3) * 2'
+        ],
+        [
+            new GetAttrNode(new NameNode('foo'), new ConstantNode('bar', true), new ArgumentsNode(), GetAttrNode.PROPERTY_CALL),
+            'foo.bar',
+            ['foo']
+        ],
+        [
+            new GetAttrNode(new NameNode('foo'), new ConstantNode('bar', true), new ArgumentsNode(), GetAttrNode.METHOD_CALL),
+            'foo.bar()',
+            ['foo']
+        ],
+        [
+            new GetAttrNode(new NameNode('foo'), new ConstantNode('not', true), new ArgumentsNode(), GetAttrNode.METHOD_CALL),
+            'foo.not()',
+            ['foo']
+        ],
+        [
+            new GetAttrNode(new NameNode('foo'), new ConstantNode('bar', true), args, GetAttrNode.METHOD_CALL),
+            'foo.bar("arg1", 2, true)',
+            ['foo']
+        ],
+        [
+            new GetAttrNode(new NameNode('foo'), new ConstantNode(3), new ArgumentsNode(), GetAttrNode.ARRAY_CALL),
+            'foo[3]',
+            ['foo']
+        ],
+        [
+            new ConditionalNode(new ConstantNode(true), new ConstantNode(true), new ConstantNode(false)),
+            'true ? true ? false'
+        ],
+        [
+            new BinaryNode('matches', new ConstantNode('foo'), new ConstantNode('/foo/')),
+            '"foo" matches "/foo/"'
+        ],
+        // chained calls
+        [
+            createGetAttrNode(createGetAttrNode(createGetAttrNode(createGetAttrNode(new NameNode('foo'), 'bar', GetAttrNode.METHOD_CALL), 'foo', GetAttrNode.METHOD_CALL), 'baz', GetAttrNode.PROPERTY_CALL), '3', GetAttrNode.ARRAY_CALL),
+            'foo.bar().foo().baz[3]',
+            ['foo']
+        ],
+        [
+            new NameNode('foo'),
+            'bar',
+            [{ foo: 'bar' }]
+        ],
+        // Operators collisions
+        [
+            new BinaryNode('in', new GetAttrNode(new NameNode('foo'), new ConstantNode('not', true), new ArgumentsNode(), GetAttrNode.PROPERTY_CALL), arrayNode),
+            'foo.not in [bar]',
+            ['foo', 'bar'],
+        ],
+        [
+            new BinaryNode('or', new UnaryNode('not', new NameNode('foo')), new GetAttrNode(new NameNode('foo'), new ConstantNode('not', true), new ArgumentsNode(), GetAttrNode.PROPERTY_CALL)),
+            'not foo or foo.not',
+            ['foo'],
+        ],
+        [
+            new BinaryNode('..', new ConstantNode(0), new ConstantNode(3)),
+            '0..3',
+        ],
+    ];
+}
+function createGetAttrNode(node, item, type) {
+    return new GetAttrNode(node, new ConstantNode(item, GetAttrNode.ARRAY_CALL !== type), new ArgumentsNode(), type);
+}
+function getInvalidPostfixData() {
+    return [
+        ['foo."#"', ['foo']],
+        ['foo."bar"', ['foo']],
+        ['foo.**', ['foo']],
+        ['foo.123', ['foo']]
+    ];
+}
+test("parse with invalid name", function () {
+    try {
+        var parser = new Parser();
+        parser.parse(tokenize("foo"));
+        console.log("The parser should throw an error.");
+        expect(true).toBe(false); // This should fail
     }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../Lexer", "../Parser", "../Node/ArgumentsNode", "../Node/ConstantNode", "../Node/NameNode", "../Node/UnaryNode", "../Node/BinaryNode", "../Node/GetAttrNode", "../Node/ConditionalNode", "../Node/ArrayNode"], factory);
+    catch (err) {
+        expect(err.toString()).toContain('Variable "foo" is not valid around position 1');
     }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var Lexer_1 = require("../Lexer");
-    var Parser_1 = require("../Parser");
-    var ArgumentsNode_1 = require("../Node/ArgumentsNode");
-    var ConstantNode_1 = require("../Node/ConstantNode");
-    var NameNode_1 = require("../Node/NameNode");
-    var UnaryNode_1 = require("../Node/UnaryNode");
-    var BinaryNode_1 = require("../Node/BinaryNode");
-    var GetAttrNode_1 = require("../Node/GetAttrNode");
-    var ConditionalNode_1 = require("../Node/ConditionalNode");
-    var ArrayNode_1 = require("../Node/ArrayNode");
-    function getParseData() {
-        var args = new ArgumentsNode_1.default();
-        args.addElement(new ConstantNode_1.default('arg1'));
-        args.addElement(new ConstantNode_1.default(2));
-        args.addElement(new ConstantNode_1.default(true));
-        var arrayNode = new ArrayNode_1.default();
-        arrayNode.addElement(new NameNode_1.default('bar'));
-        return [
-            [new NameNode_1.default('a'), 'a', ['a']],
-            [new ConstantNode_1.default('a'), '"a"'],
-            [new ConstantNode_1.default(3), '3'],
-            [new ConstantNode_1.default(false), 'false'],
-            [new ConstantNode_1.default(true), 'true'],
-            [new ConstantNode_1.default(null), 'null'],
-            [new UnaryNode_1.default('-', new ConstantNode_1.default(3)), '-3'],
-            [new BinaryNode_1.default('-', new ConstantNode_1.default(3), new ConstantNode_1.default(3)), '3 - 3'],
-            [new BinaryNode_1.default('*', new BinaryNode_1.default('-', new ConstantNode_1.default(3), new ConstantNode_1.default(3)), new ConstantNode_1.default(2)),
-                '(3 - 3) * 2'
-            ],
-            [
-                new GetAttrNode_1.default(new NameNode_1.default('foo'), new ConstantNode_1.default('bar', true), new ArgumentsNode_1.default(), GetAttrNode_1.default.PROPERTY_CALL),
-                'foo.bar',
-                ['foo']
-            ],
-            [
-                new GetAttrNode_1.default(new NameNode_1.default('foo'), new ConstantNode_1.default('bar', true), new ArgumentsNode_1.default(), GetAttrNode_1.default.METHOD_CALL),
-                'foo.bar()',
-                ['foo']
-            ],
-            [
-                new GetAttrNode_1.default(new NameNode_1.default('foo'), new ConstantNode_1.default('not', true), new ArgumentsNode_1.default(), GetAttrNode_1.default.METHOD_CALL),
-                'foo.not()',
-                ['foo']
-            ],
-            [
-                new GetAttrNode_1.default(new NameNode_1.default('foo'), new ConstantNode_1.default('bar', true), args, GetAttrNode_1.default.METHOD_CALL),
-                'foo.bar("arg1", 2, true)',
-                ['foo']
-            ],
-            [
-                new GetAttrNode_1.default(new NameNode_1.default('foo'), new ConstantNode_1.default(3), new ArgumentsNode_1.default(), GetAttrNode_1.default.ARRAY_CALL),
-                'foo[3]',
-                ['foo']
-            ],
-            [
-                new ConditionalNode_1.default(new ConstantNode_1.default(true), new ConstantNode_1.default(true), new ConstantNode_1.default(false)),
-                'true ? true ? false'
-            ],
-            [
-                new BinaryNode_1.default('matches', new ConstantNode_1.default('foo'), new ConstantNode_1.default('/foo/')),
-                '"foo" matches "/foo/"'
-            ],
-            // chained calls
-            [
-                createGetAttrNode(createGetAttrNode(createGetAttrNode(createGetAttrNode(new NameNode_1.default('foo'), 'bar', GetAttrNode_1.default.METHOD_CALL), 'foo', GetAttrNode_1.default.METHOD_CALL), 'baz', GetAttrNode_1.default.PROPERTY_CALL), '3', GetAttrNode_1.default.ARRAY_CALL),
-                'foo.bar().foo().baz[3]',
-                ['foo']
-            ],
-            [
-                new NameNode_1.default('foo'),
-                'bar',
-                [{ foo: 'bar' }]
-            ],
-            // Operators collisions
-            [
-                new BinaryNode_1.default('in', new GetAttrNode_1.default(new NameNode_1.default('foo'), new ConstantNode_1.default('not', true), new ArgumentsNode_1.default(), GetAttrNode_1.default.PROPERTY_CALL), arrayNode),
-                'foo.not in [bar]',
-                ['foo', 'bar'],
-            ],
-            [
-                new BinaryNode_1.default('or', new UnaryNode_1.default('not', new NameNode_1.default('foo')), new GetAttrNode_1.default(new NameNode_1.default('foo'), new ConstantNode_1.default('not', true), new ArgumentsNode_1.default(), GetAttrNode_1.default.PROPERTY_CALL)),
-                'not foo or foo.not',
-                ['foo'],
-            ],
-            [
-                new BinaryNode_1.default('..', new ConstantNode_1.default(0), new ConstantNode_1.default(3)),
-                '0..3',
-            ],
-        ];
+});
+test("parse with zero in names", function () {
+    try {
+        var parser = new Parser();
+        parser.parse(tokenize("foo"), [0]);
+        console.log("The parser should throw an error.");
+        expect(true).toBe(false); // This should fail
     }
-    function createGetAttrNode(node, item, type) {
-        return new GetAttrNode_1.default(node, new ConstantNode_1.default(item, GetAttrNode_1.default.ARRAY_CALL !== type), new ArgumentsNode_1.default(), type);
+    catch (err) {
+        expect(err.toString()).toContain('Variable "foo" is not valid around position 1');
     }
-    function getInvalidPostfixData() {
-        return [
-            ['foo."#"', ['foo']],
-            ['foo."bar"', ['foo']],
-            ['foo.**', ['foo']],
-            ['foo.123', ['foo']]
-        ];
-    }
-    test("parse with invalid name", function () {
+});
+test('parse with invalid postfix data', function () {
+    var invalidPostfixData = getInvalidPostfixData();
+    for (var _i = 0, invalidPostfixData_1 = invalidPostfixData; _i < invalidPostfixData_1.length; _i++) {
+        var oneTest = invalidPostfixData_1[_i];
         try {
-            var parser = new Parser_1.default();
-            parser.parse((0, Lexer_1.tokenize)("foo"));
+            var parser = new Parser();
+            parser.parse(tokenize(oneTest[0]), oneTest[1]);
             console.log("The parser should throw an error.");
             expect(true).toBe(false); // This should fail
         }
         catch (err) {
-            expect(err.toString()).toContain('Variable "foo" is not valid around position 1');
+            expect(err.name).toBe('SyntaxError');
         }
-    });
-    test("parse with zero in names", function () {
-        try {
-            var parser = new Parser_1.default();
-            parser.parse((0, Lexer_1.tokenize)("foo"), [0]);
-            console.log("The parser should throw an error.");
-            expect(true).toBe(false); // This should fail
-        }
-        catch (err) {
-            expect(err.toString()).toContain('Variable "foo" is not valid around position 1');
-        }
-    });
-    test('parse with invalid postfix data', function () {
-        var invalidPostfixData = getInvalidPostfixData();
-        for (var _i = 0, invalidPostfixData_1 = invalidPostfixData; _i < invalidPostfixData_1.length; _i++) {
-            var oneTest = invalidPostfixData_1[_i];
-            try {
-                var parser = new Parser_1.default();
-                parser.parse((0, Lexer_1.tokenize)(oneTest[0]), oneTest[1]);
-                console.log("The parser should throw an error.");
-                expect(true).toBe(false); // This should fail
-            }
-            catch (err) {
-                expect(err.name).toBe('SyntaxError');
-            }
-        }
-    });
-    test('name proposal', function () {
-        try {
-            var parser = new Parser_1.default();
-            parser.parse((0, Lexer_1.tokenize)('foo > bar'), ['foo', 'baz']);
-            console.log("The parser should throw an error.");
-            expect(true).toBe(false); // This should fail
-        }
-        catch (err) {
-            expect(err.toString()).toContain('Did you mean "baz"?');
-        }
-    });
-    test('parse', function () {
-        var parseData = getParseData();
-        for (var _i = 0, parseData_1 = parseData; _i < parseData_1.length; _i++) {
-            var parseDatum = parseData_1[_i];
-            //console.log("Testing ", parseDatum[1], parseDatum[2]);
-            var parser = new Parser_1.default();
-            var generated = parser.parse((0, Lexer_1.tokenize)(parseDatum[1]), parseDatum[2]);
-            expect(generated.toString()).toBe(parseDatum[0].toString());
-        }
-    });
+    }
+});
+test('name proposal', function () {
+    try {
+        var parser = new Parser();
+        parser.parse(tokenize('foo > bar'), ['foo', 'baz']);
+        console.log("The parser should throw an error.");
+        expect(true).toBe(false); // This should fail
+    }
+    catch (err) {
+        expect(err.toString()).toContain('Did you mean "baz"?');
+    }
+});
+test('parse', function () {
+    var parseData = getParseData();
+    for (var _i = 0, parseData_1 = parseData; _i < parseData_1.length; _i++) {
+        var parseDatum = parseData_1[_i];
+        //console.log("Testing ", parseDatum[1], parseDatum[2]);
+        var parser = new Parser();
+        var generated = parser.parse(tokenize(parseDatum[1]), parseDatum[2]);
+        expect(generated.toString()).toBe(parseDatum[0].toString());
+    }
 });

@@ -13,29 +13,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
+import Expression from "./Expression";
+var ParsedExpression = /** @class */ (function (_super) {
+    __extends(ParsedExpression, _super);
+    function ParsedExpression(expression, nodes) {
+        var _this = _super.call(this, expression) || this;
+        _this.nodes = nodes;
+        return _this;
     }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Expression"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var Expression_1 = require("./Expression");
-    var ParsedExpression = /** @class */ (function (_super) {
-        __extends(ParsedExpression, _super);
-        function ParsedExpression(expression, nodes) {
-            var _this = _super.call(this, expression) || this;
-            _this.nodes = nodes;
-            return _this;
-        }
-        ParsedExpression.prototype.getNodes = function () {
-            return this.nodes;
-        };
-        return ParsedExpression;
-    }(Expression_1.default));
-    exports.default = ParsedExpression;
-});
+    ParsedExpression.prototype.getNodes = function () {
+        return this.nodes;
+    };
+    return ParsedExpression;
+}(Expression));
+export default ParsedExpression;
