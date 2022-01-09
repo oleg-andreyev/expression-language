@@ -11,6 +11,8 @@ import DateProvider from "./Provider/DateProvider";
 
 export default ExpressionLanguage;
 
+export * from './Node';
+
 export {
     ExpressionLanguage,
     Parser,

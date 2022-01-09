@@ -9,4 +9,5 @@ import StringProvider from "./Provider/StringProvider";
 import ArrayProvider from "./Provider/ArrayProvider";
 import DateProvider from "./Provider/DateProvider";
 export default ExpressionLanguage;
+export * from './Node';
 export { ExpressionLanguage, Parser, tokenize, ExpressionFunction, Compiler, ArrayAdapter, BasicProvider, StringProvider, ArrayProvider, DateProvider };

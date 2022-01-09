@@ -6,7 +6,7 @@
   "module": "es/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "prepublish": "rm -rf lib && tsc -m module --outDir es && tsc -m commonjs --outDir lib",
+    "prepublish": "rm -rf lib && tsc -m amd --outDir es && tsc -m commonjs --outDir lib",
     "test": "jest"
   },
   "jest": {
