@@ -13,27 +13,30 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import ArrayNode from "./ArrayNode";
-var ArgumentsNode = /** @class */ (function (_super) {
-    __extends(ArgumentsNode, _super);
-    function ArgumentsNode() {
-        var _this = _super.call(this) || this;
-        _this.name = "ArgumentsNode";
-        return _this;
-    }
-    ArgumentsNode.prototype.compile = function (compiler) {
-        this.compileArguments(compiler, false);
-    };
-    ArgumentsNode.prototype.toArray = function () {
-        var array = [];
-        for (var _i = 0, _a = this.getKeyValuePairs(); _i < _a.length; _i++) {
-            var pair = _a[_i];
-            array.push(pair.value);
-            array.push(", ");
+define(["require", "exports", "./ArrayNode"], function (require, exports, ArrayNode_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var ArgumentsNode = /** @class */ (function (_super) {
+        __extends(ArgumentsNode, _super);
+        function ArgumentsNode() {
+            var _this = _super.call(this) || this;
+            _this.name = "ArgumentsNode";
+            return _this;
         }
-        array.pop();
-        return array;
-    };
-    return ArgumentsNode;
-}(ArrayNode));
-export default ArgumentsNode;
+        ArgumentsNode.prototype.compile = function (compiler) {
+            this.compileArguments(compiler, false);
+        };
+        ArgumentsNode.prototype.toArray = function () {
+            var array = [];
+            for (var _i = 0, _a = this.getKeyValuePairs(); _i < _a.length; _i++) {
+                var pair = _a[_i];
+                array.push(pair.value);
+                array.push(", ");
+            }
+            array.pop();
+            return array;
+        };
+        return ArgumentsNode;
+    }(ArrayNode_1.default));
+    exports.default = ArgumentsNode;
+});

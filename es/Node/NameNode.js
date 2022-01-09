@@ -13,23 +13,26 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import Node from "./Node";
-var NameNode = /** @class */ (function (_super) {
-    __extends(NameNode, _super);
-    function NameNode(name) {
-        var _this = _super.call(this, [], { name: name }) || this;
-        _this.name = 'NameNode';
-        return _this;
-    }
-    NameNode.prototype.compile = function (compiler) {
-        compiler.raw(this.attributes.name);
-    };
-    NameNode.prototype.evaluate = function (functions, values) {
-        return values[this.attributes.name];
-    };
-    NameNode.prototype.toArray = function () {
-        return [this.attributes.name];
-    };
-    return NameNode;
-}(Node));
-export default NameNode;
+define(["require", "exports", "./Node"], function (require, exports, Node_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var NameNode = /** @class */ (function (_super) {
+        __extends(NameNode, _super);
+        function NameNode(name) {
+            var _this = _super.call(this, [], { name: name }) || this;
+            _this.name = 'NameNode';
+            return _this;
+        }
+        NameNode.prototype.compile = function (compiler) {
+            compiler.raw(this.attributes.name);
+        };
+        NameNode.prototype.evaluate = function (functions, values) {
+            return values[this.attributes.name];
+        };
+        NameNode.prototype.toArray = function () {
+            return [this.attributes.name];
+        };
+        return NameNode;
+    }(Node_1.default));
+    exports.default = NameNode;
+});

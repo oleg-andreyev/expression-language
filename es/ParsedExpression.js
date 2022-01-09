@@ -13,17 +13,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import Expression from "./Expression";
-var ParsedExpression = /** @class */ (function (_super) {
-    __extends(ParsedExpression, _super);
-    function ParsedExpression(expression, nodes) {
-        var _this = _super.call(this, expression) || this;
-        _this.nodes = nodes;
-        return _this;
-    }
-    ParsedExpression.prototype.getNodes = function () {
-        return this.nodes;
-    };
-    return ParsedExpression;
-}(Expression));
-export default ParsedExpression;
+define(["require", "exports", "./Expression"], function (require, exports, Expression_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var ParsedExpression = /** @class */ (function (_super) {
+        __extends(ParsedExpression, _super);
+        function ParsedExpression(expression, nodes) {
+            var _this = _super.call(this, expression) || this;
+            _this.nodes = nodes;
+            return _this;
+        }
+        ParsedExpression.prototype.getNodes = function () {
+            return this.nodes;
+        };
+        return ParsedExpression;
+    }(Expression_1.default));
+    exports.default = ParsedExpression;
+});

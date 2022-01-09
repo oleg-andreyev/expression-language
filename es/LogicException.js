@@ -13,16 +13,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var LogicException = /** @class */ (function (_super) {
-    __extends(LogicException, _super);
-    function LogicException(message) {
-        var _this = _super.call(this, message) || this;
-        _this.name = "LogicException";
-        return _this;
-    }
-    LogicException.prototype.toString = function () {
-        return "".concat(this.name, ": ").concat(this.message);
-    };
-    return LogicException;
-}(Error));
-export default LogicException;
+define(["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var LogicException = /** @class */ (function (_super) {
+        __extends(LogicException, _super);
+        function LogicException(message) {
+            var _this = _super.call(this, message) || this;
+            _this.name = "LogicException";
+            return _this;
+        }
+        LogicException.prototype.toString = function () {
+            return "".concat(this.name, ": ").concat(this.message);
+        };
+        return LogicException;
+    }(Error));
+    exports.default = LogicException;
+});
