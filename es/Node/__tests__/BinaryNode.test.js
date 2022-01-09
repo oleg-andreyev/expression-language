@@ -1,6 +1,18 @@
-define(["require", "exports", "../ConstantNode", "../ArrayNode", "../BinaryNode", "../../Compiler"], function (require, exports, ConstantNode_1, ArrayNode_1, BinaryNode_1, Compiler_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../ConstantNode", "../ArrayNode", "../BinaryNode", "../../Compiler"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var ConstantNode_1 = require("../ConstantNode");
+    var ArrayNode_1 = require("../ArrayNode");
+    var BinaryNode_1 = require("../BinaryNode");
+    var Compiler_1 = require("../../Compiler");
     function getEvaluateData() {
         var arr = new ArrayNode_1.default();
         arr.addElement(new ConstantNode_1.default('a'));

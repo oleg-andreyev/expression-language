@@ -1,6 +1,16 @@
-define(["require", "exports", "../../ExpressionLanguage", "../StringProvider"], function (require, exports, ExpressionLanguage_1, StringProvider_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../../ExpressionLanguage", "../StringProvider"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var ExpressionLanguage_1 = require("../../ExpressionLanguage");
+    var StringProvider_1 = require("../StringProvider");
     test('strtolower evaluate', function () {
         var el = new ExpressionLanguage_1.default(null, [new StringProvider_1.default()]);
         var result = el.evaluate('strtolower("TESTING")');

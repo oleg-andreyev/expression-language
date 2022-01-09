@@ -1,6 +1,15 @@
-define(["require", "exports", "./CacheItem"], function (require, exports, CacheItem_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./CacheItem"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var CacheItem_1 = require("./CacheItem");
     var ArrayAdapter = /** @class */ (function () {
         function ArrayAdapter(defaultLifetime) {
             if (defaultLifetime === void 0) { defaultLifetime = 0; }

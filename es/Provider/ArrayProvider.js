@@ -13,10 +13,23 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "../ExpressionFunction", "./AbstractProvider", "locutus/php/array/array_intersect", "locutus/php/array/count", "locutus/php/strings/implode"], function (require, exports, ExpressionFunction_1, AbstractProvider_1, array_intersect_1, count_1, implode_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../ExpressionFunction", "./AbstractProvider", "locutus/php/array/array_intersect", "locutus/php/array/count", "locutus/php/strings/implode"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.arrayIntersectFn = exports.countFn = exports.implodeFn = void 0;
+    var ExpressionFunction_1 = require("../ExpressionFunction");
+    var AbstractProvider_1 = require("./AbstractProvider");
+    var array_intersect_1 = require("locutus/php/array/array_intersect");
+    var count_1 = require("locutus/php/array/count");
+    var implode_1 = require("locutus/php/strings/implode");
     var ArrayProvider = /** @class */ (function (_super) {
         __extends(ArrayProvider, _super);
         function ArrayProvider() {

@@ -13,9 +13,26 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "../ExpressionFunction", "./AbstractProvider", "locutus/php/strings/explode", "locutus/php/strings/strlen", "locutus/php/strings/strtolower", "locutus/php/strings/strtoupper", "locutus/php/strings/substr", "locutus/php/strings/strstr", "locutus/php/strings/stristr"], function (require, exports, ExpressionFunction_1, AbstractProvider_1, explode_1, strlen_1, strtolower_1, strtoupper_1, substr_1, strstr_1, stristr_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../ExpressionFunction", "./AbstractProvider", "locutus/php/strings/explode", "locutus/php/strings/strlen", "locutus/php/strings/strtolower", "locutus/php/strings/strtoupper", "locutus/php/strings/substr", "locutus/php/strings/strstr", "locutus/php/strings/stristr"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var ExpressionFunction_1 = require("../ExpressionFunction");
+    var AbstractProvider_1 = require("./AbstractProvider");
+    var explode_1 = require("locutus/php/strings/explode");
+    var strlen_1 = require("locutus/php/strings/strlen");
+    var strtolower_1 = require("locutus/php/strings/strtolower");
+    var strtoupper_1 = require("locutus/php/strings/strtoupper");
+    var substr_1 = require("locutus/php/strings/substr");
+    var strstr_1 = require("locutus/php/strings/strstr");
+    var stristr_1 = require("locutus/php/strings/stristr");
     var StringProvider = /** @class */ (function (_super) {
         __extends(StringProvider, _super);
         function StringProvider() {

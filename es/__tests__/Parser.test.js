@@ -1,6 +1,24 @@
-define(["require", "exports", "../Lexer", "../Parser", "../Node/ArgumentsNode", "../Node/ConstantNode", "../Node/NameNode", "../Node/UnaryNode", "../Node/BinaryNode", "../Node/GetAttrNode", "../Node/ConditionalNode", "../Node/ArrayNode"], function (require, exports, Lexer_1, Parser_1, ArgumentsNode_1, ConstantNode_1, NameNode_1, UnaryNode_1, BinaryNode_1, GetAttrNode_1, ConditionalNode_1, ArrayNode_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../Lexer", "../Parser", "../Node/ArgumentsNode", "../Node/ConstantNode", "../Node/NameNode", "../Node/UnaryNode", "../Node/BinaryNode", "../Node/GetAttrNode", "../Node/ConditionalNode", "../Node/ArrayNode"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var Lexer_1 = require("../Lexer");
+    var Parser_1 = require("../Parser");
+    var ArgumentsNode_1 = require("../Node/ArgumentsNode");
+    var ConstantNode_1 = require("../Node/ConstantNode");
+    var NameNode_1 = require("../Node/NameNode");
+    var UnaryNode_1 = require("../Node/UnaryNode");
+    var BinaryNode_1 = require("../Node/BinaryNode");
+    var GetAttrNode_1 = require("../Node/GetAttrNode");
+    var ConditionalNode_1 = require("../Node/ConditionalNode");
+    var ArrayNode_1 = require("../Node/ArrayNode");
     function getParseData() {
         var args = new ArgumentsNode_1.default();
         args.addElement(new ConstantNode_1.default('arg1'));

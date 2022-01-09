@@ -1,6 +1,20 @@
-define(["require", "exports", "./Lexer", "./Parser", "./Compiler", "./ParsedExpression", "./Cache/ArrayAdapter", "./LogicException"], function (require, exports, Lexer_1, Parser_1, Compiler_1, ParsedExpression_1, ArrayAdapter_1, LogicException_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./Lexer", "./Parser", "./Compiler", "./ParsedExpression", "./Cache/ArrayAdapter", "./LogicException"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var Lexer_1 = require("./Lexer");
+    var Parser_1 = require("./Parser");
+    var Compiler_1 = require("./Compiler");
+    var ParsedExpression_1 = require("./ParsedExpression");
+    var ArrayAdapter_1 = require("./Cache/ArrayAdapter");
+    var LogicException_1 = require("./LogicException");
     var ExpressionLanguage = /** @class */ (function () {
         function ExpressionLanguage(cache, providers) {
             if (cache === void 0) { cache = null; }

@@ -13,9 +13,18 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./ArrayNode"], function (require, exports, ArrayNode_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./ArrayNode"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var ArrayNode_1 = require("./ArrayNode");
     var ArgumentsNode = /** @class */ (function (_super) {
         __extends(ArgumentsNode, _super);
         function ArgumentsNode() {

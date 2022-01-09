@@ -1,6 +1,16 @@
-define(["require", "exports", "../../ExpressionLanguage", "../ArrayProvider"], function (require, exports, ExpressionLanguage_1, ArrayProvider_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../../ExpressionLanguage", "../ArrayProvider"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var ExpressionLanguage_1 = require("../../ExpressionLanguage");
+    var ArrayProvider_1 = require("../ArrayProvider");
     test('implode evaluate', function () {
         var el = new ExpressionLanguage_1.default(null, [new ArrayProvider_1.default()]);
         var result = el.evaluate('implode(". ", ["check", "this", "out"])');

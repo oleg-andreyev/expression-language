@@ -13,9 +13,18 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./lib/Levenshtein"], function (require, exports, Levenshtein_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./lib/Levenshtein"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var Levenshtein_1 = require("./lib/Levenshtein");
     var SyntaxError = /** @class */ (function (_super) {
         __extends(SyntaxError, _super);
         function SyntaxError(message, cursor, expression, subject, proposals) {

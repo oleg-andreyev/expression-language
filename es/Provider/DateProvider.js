@@ -13,9 +13,21 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./AbstractProvider", "../ExpressionFunction", "locutus/php/datetime/date", "locutus/php/datetime/strtotime"], function (require, exports, AbstractProvider_1, ExpressionFunction_1, date_1, strtotime_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./AbstractProvider", "../ExpressionFunction", "locutus/php/datetime/date", "locutus/php/datetime/strtotime"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var AbstractProvider_1 = require("./AbstractProvider");
+    var ExpressionFunction_1 = require("../ExpressionFunction");
+    var date_1 = require("locutus/php/datetime/date");
+    var strtotime_1 = require("locutus/php/datetime/strtotime");
     var DateProvider = /** @class */ (function (_super) {
         __extends(DateProvider, _super);
         function DateProvider() {

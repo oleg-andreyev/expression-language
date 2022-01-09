@@ -1,6 +1,16 @@
-define(["require", "exports", "../lib/is-scalar", "../lib/addcslashes"], function (require, exports, is_scalar_1, addcslashes_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../lib/is-scalar", "../lib/addcslashes"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var is_scalar_1 = require("../lib/is-scalar");
+    var addcslashes_1 = require("../lib/addcslashes");
     var Node = /** @class */ (function () {
         function Node(nodes, attributes) {
             if (attributes === void 0) { attributes = {}; }

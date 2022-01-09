@@ -1,7 +1,17 @@
-define(["require", "exports", "./SyntaxError", "./Token"], function (require, exports, SyntaxError_1, Token_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./SyntaxError", "./Token"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TokenStream = void 0;
+    var SyntaxError_1 = require("./SyntaxError");
+    var Token_1 = require("./Token");
     var TokenStream = /** @class */ (function () {
         function TokenStream(expression, tokens) {
             this.expression = expression;

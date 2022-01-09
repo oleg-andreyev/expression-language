@@ -1,6 +1,17 @@
-define(["require", "exports", "../Lexer", "../TokenStream", "../Token"], function (require, exports, Lexer_1, TokenStream_1, Token_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../Lexer", "../TokenStream", "../Token"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var Lexer_1 = require("../Lexer");
+    var TokenStream_1 = require("../TokenStream");
+    var Token_1 = require("../Token");
     function getTokenizeData() {
         return [
             [

@@ -1,6 +1,16 @@
-define(["require", "exports", "../NameNode", "../../Compiler"], function (require, exports, NameNode_1, Compiler_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../NameNode", "../../Compiler"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var NameNode_1 = require("../NameNode");
+    var Compiler_1 = require("../../Compiler");
     function getEvaluateData() {
         return [
             ['bar', new NameNode_1.default('foo'), { foo: 'bar' }],

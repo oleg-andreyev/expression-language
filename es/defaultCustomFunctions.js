@@ -1,7 +1,16 @@
-define(["require", "exports", "luxon"], function (require, exports, luxon_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "luxon"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.int = exports.string = exports.date = exports.year = exports.dateFormat = exports.now = exports.isCurrency = exports.isNull = exports.isPhone = exports.isEmail = exports.strLen = exports.isString = void 0;
+    var luxon_1 = require("luxon");
     var isString = function (s) {
         return typeof s === "string";
     };

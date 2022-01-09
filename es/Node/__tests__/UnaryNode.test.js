@@ -1,6 +1,17 @@
-define(["require", "exports", "../ConstantNode", "../UnaryNode", "../../Compiler"], function (require, exports, ConstantNode_1, UnaryNode_1, Compiler_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../ConstantNode", "../UnaryNode", "../../Compiler"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var ConstantNode_1 = require("../ConstantNode");
+    var UnaryNode_1 = require("../UnaryNode");
+    var Compiler_1 = require("../../Compiler");
     function getEvaluateData() {
         return [
             [-1, new UnaryNode_1.default('-', new ConstantNode_1.default(1))],

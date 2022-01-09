@@ -1,7 +1,27 @@
-define(["require", "exports", "./SyntaxError", "./Node/Node", "./Node/BinaryNode", "./Node/UnaryNode", "./Node/ConstantNode", "./Node/ConditionalNode", "./Node/FunctionNode", "./Node/NameNode", "./Node/ArrayNode", "./Node/ArgumentsNode", "./Node/GetAttrNode", "./Token"], function (require, exports, SyntaxError_1, Node_1, BinaryNode_1, UnaryNode_1, ConstantNode_1, ConditionalNode_1, FunctionNode_1, NameNode_1, ArrayNode_1, ArgumentsNode_1, GetAttrNode_1, Token_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./SyntaxError", "./Node/Node", "./Node/BinaryNode", "./Node/UnaryNode", "./Node/ConstantNode", "./Node/ConditionalNode", "./Node/FunctionNode", "./Node/NameNode", "./Node/ArrayNode", "./Node/ArgumentsNode", "./Node/GetAttrNode", "./Token"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.OPERATOR_RIGHT = exports.OPERATOR_LEFT = void 0;
+    var SyntaxError_1 = require("./SyntaxError");
+    var Node_1 = require("./Node/Node");
+    var BinaryNode_1 = require("./Node/BinaryNode");
+    var UnaryNode_1 = require("./Node/UnaryNode");
+    var ConstantNode_1 = require("./Node/ConstantNode");
+    var ConditionalNode_1 = require("./Node/ConditionalNode");
+    var FunctionNode_1 = require("./Node/FunctionNode");
+    var NameNode_1 = require("./Node/NameNode");
+    var ArrayNode_1 = require("./Node/ArrayNode");
+    var ArgumentsNode_1 = require("./Node/ArgumentsNode");
+    var GetAttrNode_1 = require("./Node/GetAttrNode");
+    var Token_1 = require("./Token");
     exports.OPERATOR_LEFT = 1;
     exports.OPERATOR_RIGHT = 2;
     var Parser = /** @class */ (function () {

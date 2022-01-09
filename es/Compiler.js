@@ -1,6 +1,15 @@
-define(["require", "exports", "./lib/addcslashes"], function (require, exports, addcslashes_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./lib/addcslashes"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var addcslashes_1 = require("./lib/addcslashes");
     var Compiler = /** @class */ (function () {
         function Compiler(functions) {
             this.source = '';

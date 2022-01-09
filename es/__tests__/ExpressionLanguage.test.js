@@ -1,6 +1,16 @@
-define(["require", "exports", "../ExpressionLanguage", "../ExpressionFunction"], function (require, exports, ExpressionLanguage_1, ExpressionFunction_1) {
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "../ExpressionLanguage", "../ExpressionFunction"], factory);
+    }
+})(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var ExpressionLanguage_1 = require("../ExpressionLanguage");
+    var ExpressionFunction_1 = require("../ExpressionFunction");
     test('parse throws', function () {
         var exprLang = new ExpressionLanguage_1.default();
         try {
